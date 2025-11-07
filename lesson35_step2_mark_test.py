@@ -10,23 +10,24 @@ def browser():
     print("\nstart browser for test..")
     browser = webdriver.Chrome()
     yield browser
-    # этот код выполнится после завершения теста
     print("\nquit browser..")
     browser.quit()
 
+@pytest.fixture(autouse=True)
+def prepare_data():
+    print()
+    print("\033[1;94m preparing some \033[1;31m critical \033[1;94m data for every test\033[0m")
+
 
 class TestMainPage1():
-    # вызываем фикстуру в тесте, передав ее как параметр
+
+    @pytest.mark.smoke
     def test_guest_should_see_login_link(self, browser):
-        print("start test1")
+        # не передаём как параметр фикстуру prepare_data, но она все равно выполняется
         browser.get(link)
         browser.find_element(By.CSS_SELECTOR, "#login_link")
-        print("finish test1")
 
-
+    @pytest.mark.regression
     def test_guest_should_see_basket_link_on_the_main_page(self, browser):
-        print("start test2")
         browser.get(link)
         browser.find_element(By.CSS_SELECTOR, ".basket-mini .btn-group > a")
-        print("finish test2")
-
