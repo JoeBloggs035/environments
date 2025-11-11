@@ -1,3 +1,5 @@
+#pip install pytest-rerunfailures
+#pytest -v --tb=line --reruns 1 --browser_name=firefox lesson36/lesson36_step5_alien_messages_test.py
 import pytest
 import time
 import math
@@ -8,14 +10,28 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from for_lesson36_step4 import email, sappword
 
+"""
+def pytest_addoption(parser):
+    parser.addoption('--browser_name', action='store', default=chrome,
+                     help="Choose browser: chrome or firefox")
+
+
 @pytest.fixture(scope="function")
-def browser():
-    print("\nstart browser for test..")
-    #browser = webdriver.Firefox()
-    browser = webdriver.Chrome()
+def browser(request):
+    browser_name = request.config.getoption("browser_name")
+    browser = None
+    if browser_name == "chrome":
+        print("\nstart chrome browser for test..")
+        browser = webdriver.Chrome()
+    elif browser_name == "firefox":
+        print("\nstart firefox browser for test..")
+        browser = webdriver.Firefox()
+    else:
+        raise pytest.UsageError("--browser_name should be chrome or firefox")
     yield browser
     print("\nquit browser..")
     browser.quit()
+"""
 
 @pytest.mark.parametrize('maybe_link', ["236895", "236896", "236897", "236898", "236899", "236903", "236904", "236905"])
 def test_registration_on_stepik(browser, maybe_link):
